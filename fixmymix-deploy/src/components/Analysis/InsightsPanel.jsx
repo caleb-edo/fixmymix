@@ -104,9 +104,9 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
 
     if (!isPlaying) {
         return (
-            <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-2xl p-8 text-white">
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
-                    <Lightbulb className="w-6 h-6 mr-2" />
+            <div className="bg-gradient-to-br from-slate-900 to-blue-900 rounded-2xl p-6 sm:p-8 text-white">
+                <h3 className="text-lg sm:text-xl font-semibold mb-4 flex items-center">
+                    <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
                     Mixing Insights
                 </h3>
 
@@ -116,7 +116,7 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
                     <select
                         value={selectedGenre}
                         onChange={(e) => setSelectedGenre(e.target.value)}
-                        className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-sky-400 transition-colors"
+                        className="w-full px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none focus:border-sky-400 transition-colors text-sm sm:text-base"
                     >
                         {genres.map(genre => (
                             <option key={genre.value} value={genre.value} className="bg-slate-800">
@@ -126,7 +126,7 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
                     </select>
                 </div>
 
-                <p className="text-white/70">
+                <p className="text-white/70 text-sm sm:text-base">
                     Play your track to get real-time mixing analysis and suggestions tailored to your genre
                 </p>
             </div>
@@ -134,10 +134,10 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
     }
 
     return (
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-slate-200">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-semibold text-slate-800 flex items-center">
-                    <Lightbulb className="w-6 h-6 mr-2 text-sky-500" />
+        <div className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 border border-slate-200 overflow-hidden">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 space-y-2 sm:space-y-0">
+                <h3 className="text-lg sm:text-xl font-semibold text-slate-800 flex items-center">
+                    <Lightbulb className="w-5 h-5 sm:w-6 sm:h-6 mr-2 text-sky-500" />
                     Real-Time Mixing Insights
                 </h3>
                 {isAnalyzing && (
@@ -150,7 +150,7 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
 
             {/* Genre Selector - Active State */}
             <div className="mb-4 p-3 bg-slate-50 rounded-lg">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
                     <div className="flex items-center space-x-2">
                         <Music className="w-4 h-4 text-slate-600" />
                         <span className="text-sm font-medium text-slate-700">Genre Mode:</span>
@@ -158,7 +158,7 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
                     <select
                         value={selectedGenre}
                         onChange={(e) => setSelectedGenre(e.target.value)}
-                        className="px-3 py-1 text-sm rounded-md bg-white border border-slate-300 text-slate-700 focus:outline-none focus:border-sky-400 transition-colors"
+                        className="px-3 py-1 text-sm rounded-md bg-white border border-slate-300 text-slate-700 focus:outline-none focus:border-sky-400 transition-colors w-full sm:w-auto"
                     >
                         {genres.map(genre => (
                             <option key={genre.value} value={genre.value}>
@@ -172,17 +172,17 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
             {/* Severity Legend */}
             <div className="mb-6 p-4 bg-slate-50 rounded-lg">
                 <p className="text-xs font-medium text-slate-600 mb-2">INSIGHT SEVERITY LEVELS:</p>
-                <div className="flex flex-wrap gap-4 text-xs">
+                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs">
                     <div className="flex items-center space-x-2">
-                        <AlertTriangle className="w-4 h-4 text-amber-500" />
+                        <AlertTriangle className="w-4 h-4 text-amber-500 flex-shrink-0" />
                         <span className="text-slate-600"><span className="font-medium">Warning:</span> Issues affecting mix quality</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <Info className="w-4 h-4 text-blue-500" />
+                        <Info className="w-4 h-4 text-blue-500 flex-shrink-0" />
                         <span className="text-slate-600"><span className="font-medium">Info:</span> Suggestions for improvement</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
+                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                         <span className="text-slate-600"><span className="font-medium">Success:</span> Mix sounds good!</span>
                     </div>
                 </div>
@@ -202,29 +202,29 @@ const InsightsPanel = ({ audioProcessor, isPlaying }) => {
                         return (
                             <div
                                 key={index}
-                                className={`${styles.bg} ${styles.border} border rounded-xl p-6 transition-all duration-300 hover:shadow-md`}
+                                className={`${styles.bg} ${styles.border} border rounded-xl p-4 sm:p-6 transition-all duration-300 hover:shadow-md overflow-hidden`}
                             >
                                 <div className="flex items-start space-x-3">
                                     <div className="flex-shrink-0 mt-0.5">
                                         {getIcon(insight.type)}
                                     </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center space-x-2 mb-2">
-                                            <h4 className={`font-semibold ${styles.titleColor}`}>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-2">
+                                            <h4 className={`font-semibold ${styles.titleColor} text-sm sm:text-base`}>
                                                 {insight.title}
                                             </h4>
                                             {getCategoryIcon(insight.category) && (
-                                                <span className={`text-xs px-2 py-1 rounded-full ${styles.bg} ${styles.textColor} flex items-center space-x-1`}>
+                                                <span className={`text-xs px-2 py-1 rounded-full ${styles.bg} ${styles.textColor} flex items-center space-x-1 w-fit`}>
                                                     {getCategoryIcon(insight.category)}
                                                     <span>{insight.category}</span>
                                                 </span>
                                             )}
                                         </div>
-                                        <p className={`text-sm ${styles.textColor} mb-3`}>
+                                        <p className={`text-sm ${styles.textColor} mb-3 leading-relaxed`}>
                                             {insight.description}
                                         </p>
                                         <div className={`text-sm ${styles.titleColor} font-medium`}>
-                                            💡 Try this: <span className={styles.textColor}>{insight.solution}</span>
+                                            💡 Try this: <span className={`${styles.textColor} font-normal`}>{insight.solution}</span>
                                         </div>
                                     </div>
                                 </div>
