@@ -313,7 +313,7 @@ const FixMyMixAI = ({ user, onUpgradeClick, audioContext, onMixComplete, isTrial
                     >
                         <input
                             type="file"
-                            accept="audio/*"
+                            accept="audio/mpeg,audio/wav,audio/mp3,audio/m4a,audio/x-m4a,audio/mp4,.mp3,.wav,.m4a,.aac"
                             onChange={(e) => handleFileSelect(e.target.files[0], 'beat')}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
@@ -346,7 +346,7 @@ const FixMyMixAI = ({ user, onUpgradeClick, audioContext, onMixComplete, isTrial
                     >
                         <input
                             type="file"
-                            accept="audio/*"
+                            accept="audio/mpeg,audio/wav,audio/mp3,audio/m4a,audio/x-m4a,audio/mp4,.mp3,.wav,.m4a,.aac"
                             onChange={(e) => handleFileSelect(e.target.files[0], 'vocals')}
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         />
