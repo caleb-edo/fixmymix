@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Play, Pause, Square, Activity, BarChart3, Lightbulb, Headphones, AlertCircle, Sparkles, Menu, X, Mail, ChevronRight, Lock, Shield, Zap, Users, Star, ArrowRight, LogOut } from 'lucide-react';
+import { Play, Pause, Square, Activity, BarChart3, Lightbulb, Headphones, AlertCircle, Sparkles, Menu, X, Twitter, Instagram, Mail, ChevronRight, Lock, Shield, Zap, Users, Star, ArrowRight, LogOut } from 'lucide-react';
 import { useAudioContext } from './hooks/useAudioContext';
 import { AudioProcessor } from './utils/audioProcessor';
 import AudioUpload from './components/AudioUpload/AudioUpload';
@@ -8,34 +8,49 @@ import InsightsPanel from './components/Analysis/InsightsPanel';
 import FixMyMixAI from './components/AI/FixMyMixAI';
 import AuthModal from './components/Auth/AuthModal';
 
+// API Configuration
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
 // Navigation Component
 const Navigation = ({ user, onLogout, onAuthClick }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+    const scrollToSection = (sectionId) => {
+        const element = document.getElementById(sectionId);
+        if (element) {
+            element.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            // Close mobile menu after clicking
+            setMobileMenuOpen(false);
+        }
+    };
+
     return (
-        <nav className="bg-gradient-to-r from-slate-900 to-blue-900 shadow-xl sticky top-0 z-50">
-            <div className="max-w-7xl mx-auto px-6">
-                <div className="flex items-center justify-between h-20">
+        <nav className="bg-gradient-to-r from-slate-900 to-blue-900 shadow-xl sticky top-0 z-50 w-full">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="flex items-center justify-between h-16 sm:h-20">
                     {/* Logo */}
-                    <div className="flex items-center space-x-4">
-                        <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl">
-                            <Activity className="w-8 h-8 text-sky-400" />
+                    <div className="flex items-center space-x-3 sm:space-x-4 min-w-0">
+                        <div className="p-2 sm:p-3 bg-white/10 backdrop-blur-sm rounded-xl flex-shrink-0">
+                            <Activity className="w-6 h-6 sm:w-8 sm:h-8 text-sky-400" />
                         </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-white">FixMyMix</h1>
-                            <p className="text-sky-200 text-xs">Free Professional Audio Analysis</p>
+                        <div className="min-w-0">
+                            <h1 className="text-xl sm:text-2xl font-bold text-white truncate">FixMyMix</h1>
+                            <p className="text-sky-200 text-xs hidden sm:block">Free Professional Audio Analysis</p>
                         </div>
                     </div>
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <a href="#features" className="text-white/80 hover:text-white transition-colors">Features</a>
-                        <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
-                        <a href="#contact" className="text-white/80 hover:text-white transition-colors">Contact</a>
+                        <button onClick={() => scrollToSection('features')} className="text-white/80 hover:text-white transition-colors">Features</button>
+                        <button onClick={() => scrollToSection('about')} className="text-white/80 hover:text-white transition-colors">About</button>
+                        <button onClick={() => scrollToSection('contact')} className="text-white/80 hover:text-white transition-colors">Contact</button>
 
                         {user ? (
                             <>
-                                <span className="text-white/70 text-sm">
+                                <span className="text-white/70 text-sm max-w-32 truncate">
                                     {user.email}
                                 </span>
                                 <button
@@ -67,7 +82,7 @@ const Navigation = ({ user, onLogout, onAuthClick }) => {
                     {/* Mobile menu button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="md:hidden text-white"
+                        className="md:hidden text-white flex-shrink-0"
                     >
                         {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
@@ -77,12 +92,12 @@ const Navigation = ({ user, onLogout, onAuthClick }) => {
                 {mobileMenuOpen && (
                     <div className="md:hidden pb-6">
                         <div className="flex flex-col space-y-4">
-                            <a href="#features" className="text-white/80 hover:text-white transition-colors">Features</a>
-                            <a href="#about" className="text-white/80 hover:text-white transition-colors">About</a>
-                            <a href="#contact" className="text-white/80 hover:text-white transition-colors">Contact</a>
+                            <button onClick={() => scrollToSection('features')} className="text-white/80 hover:text-white transition-colors text-left">Features</button>
+                            <button onClick={() => scrollToSection('about')} className="text-white/80 hover:text-white transition-colors text-left">About</button>
+                            <button onClick={() => scrollToSection('contact')} className="text-white/80 hover:text-white transition-colors text-left">Contact</button>
                             {user ? (
                                 <>
-                                    <span className="text-white/70 text-sm">
+                                    <span className="text-white/70 text-sm truncate">
                                         {user.email}
                                     </span>
                                     <button
@@ -277,14 +292,14 @@ function App() {
         // If trial already used and not logged in, show signup prompt
         if (!canUseFixMyMix() && !user) {
             return (
-                <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-8 text-white">
+                <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl p-6 sm:p-8 text-white">
                     <div className="max-w-2xl mx-auto">
-                        <Sparkles className="w-16 h-16 mx-auto mb-4" />
-                        <h2 className="text-3xl font-bold mb-4">FixMyMix AI - Trial Used</h2>
+                        <Sparkles className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4" />
+                        <h2 className="text-2xl sm:text-3xl font-bold mb-4">FixMyMix AI - Trial Used</h2>
                         <p className="text-lg mb-6 text-purple-100">
                             You've used your free trial! Sign up for free to get unlimited AI mixing with professional results.
                         </p>
-                        <div className="grid md:grid-cols-3 gap-4 mb-8">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                             <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4">
                                 <h3 className="font-semibold mb-2">Unlimited Mixing</h3>
                                 <p className="text-sm text-purple-100">Mix as many tracks as you want</p>
@@ -314,7 +329,7 @@ function App() {
             <div className="space-y-4">
                 {!user && !hasTriedFixMyMix && (
                     <div className="bg-green-100 border border-green-300 rounded-xl p-4">
-                        <p className="text-green-800 font-medium">
+                        <p className="text-green-800 font-medium text-sm sm:text-base">
                             🎉 Free Trial: Experience the full FixMyMix AI feature once! Upload, mix, play, and download your result.
                         </p>
                     </div>
@@ -335,15 +350,15 @@ function App() {
         if (user) return null; // Logged in users have unlimited access
 
         return (
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                    <AlertCircle className="w-5 h-5 text-amber-600" />
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0">
+                <div className="flex items-start sm:items-center space-x-3">
+                    <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5 sm:mt-0" />
                     <div>
-                        <p className="text-amber-800 font-medium">
+                        <p className="text-amber-800 font-medium text-sm sm:text-base">
                             Free Trial: {dailyUsage}/2 tracks analyzed today
                             {!hasTriedFixMyMix && <span className="text-green-600"> • 1 AI Mix trial available</span>}
                         </p>
-                        <p className="text-amber-600 text-sm">
+                        <p className="text-amber-600 text-xs sm:text-sm">
                             {dailyUsage >= 2
                                 ? "Daily limit reached. Sign up for free unlimited access!"
                                 : `${2 - dailyUsage} track${2 - dailyUsage === 1 ? '' : 's'} remaining today`}
@@ -353,7 +368,7 @@ function App() {
                 {dailyUsage >= 2 && (
                     <button
                         onClick={() => handleAuthClick('register')}
-                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all text-sm font-semibold shadow-md"
+                        className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all text-sm font-semibold shadow-md flex-shrink-0"
                     >
                         Sign Up Free
                     </button>
@@ -363,7 +378,7 @@ function App() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50">
+        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-sky-50 overflow-x-hidden">
             {/* Navigation */}
             <Navigation
                 user={user}
@@ -378,20 +393,21 @@ function App() {
                     onClose={() => setAuthModalOpen(false)}
                     mode={authMode}
                     onAuth={handleAuth}
+                    apiUrl={API_URL}
                 />
             )}
 
             {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-6 py-12">
+            <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12 w-full overflow-hidden">
                 {!isContextReady && (
                     <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6 flex items-center justify-center">
                         <AlertCircle className="w-5 h-5 text-yellow-600 mr-2" />
-                        <p className="text-yellow-800">Click anywhere to initialize audio context</p>
+                        <p className="text-yellow-800 text-sm sm:text-base">Click anywhere to initialize audio context</p>
                     </div>
                 )}
 
                 {showAIMixer ? (
-                    <div className="space-y-8">
+                    <div className="space-y-6 sm:space-y-8">
                         <button
                             onClick={() => setShowAIMixer(false)}
                             className="text-sky-600 hover:text-sky-700 font-medium flex items-center"
@@ -404,17 +420,17 @@ function App() {
                         />
                     </div>
                 ) : !currentFile ? (
-                    <div className="space-y-12">
+                    <div className="space-y-8 sm:space-y-12">
                         {/* Hero Section */}
-                        <div className="text-center space-y-4 max-w-3xl mx-auto pt-8">
+                        <div className="text-center space-y-4 max-w-3xl mx-auto pt-4 sm:pt-8">
                             <div className="inline-flex items-center px-4 py-2 bg-sky-100 text-sky-800 rounded-full text-sm font-medium">
                                 <Zap className="w-4 h-4 mr-2" />
                                 100% Free Professional Audio Tools
                             </div>
-                            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-slate-800 to-sky-600 bg-clip-text text-transparent">
+                            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-slate-800 to-sky-600 bg-clip-text text-transparent leading-tight">
                                 Transform Your Mix with AI-Powered Analysis
                             </h1>
-                            <p className="text-xl text-slate-600">
+                            <p className="text-lg sm:text-xl text-slate-600 px-4">
                                 Upload your beat or instrumental to receive professional mixing and mastering insights
                                 powered by advanced audio visualization and smart analysis - completely free!
                             </p>
@@ -439,13 +455,13 @@ function App() {
                         {/* Features Section */}
                         <section id="features" className="space-y-8">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-4">Powerful Features - 100% Free</h2>
-                                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Powerful Features - 100% Free</h2>
+                                <p className="text-lg text-slate-600 max-w-2xl mx-auto px-4">
                                     Professional-grade audio analysis and AI-powered mixing tools. No hidden fees, no credit card required.
                                 </p>
                             </div>
 
-                            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
                                 <div className="bg-white rounded-2xl shadow-lg p-6 border border-slate-200 hover:shadow-xl transition-shadow">
                                     <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center mb-4">
                                         <BarChart3 className="w-6 h-6 text-sky-600" />
@@ -511,14 +527,14 @@ function App() {
                         {/* How It Works Section */}
                         <section className="space-y-8">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
-                                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">How It Works</h2>
+                                <p className="text-lg text-slate-600 max-w-2xl mx-auto px-4">
                                     Get started in seconds - no payment required!
                                 </p>
                             </div>
 
-                            <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-                                <div className="grid md:grid-cols-2 gap-8 items-center">
+                            <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-slate-200">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                                     <div>
                                         <h3 className="text-2xl font-bold text-slate-800 mb-6">Free Trial</h3>
                                         <ul className="space-y-4">
@@ -570,7 +586,7 @@ function App() {
                                     {!user && (
                                         <button
                                             onClick={() => handleAuthClick('register')}
-                                            className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg font-semibold"
+                                            className="inline-flex items-center px-6 sm:px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all shadow-lg font-semibold"
                                         >
                                             <ArrowRight className="w-5 h-5 mr-2" />
                                             Sign Up Free - Get Unlimited Access
@@ -583,15 +599,15 @@ function App() {
                         {/* About Section */}
                         <section id="about" className="space-y-8">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-4">About FixMyMix</h2>
-                                <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">About FixMyMix</h2>
+                                <p className="text-lg text-slate-600 max-w-3xl mx-auto px-4">
                                     We believe professional audio tools should be accessible to everyone, regardless of budget.
                                 </p>
                             </div>
 
-                            <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
+                            <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 border border-slate-200">
                                 <div className="max-w-4xl mx-auto">
-                                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 items-center">
                                         <div>
                                             <h3 className="text-2xl font-bold text-slate-800 mb-4">Our Mission</h3>
                                             <p className="text-slate-600 mb-6">
@@ -621,7 +637,7 @@ function App() {
                                             </ul>
                                         </div>
 
-                                        <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-8">
+                                        <div className="bg-gradient-to-br from-sky-50 to-blue-50 rounded-2xl p-6 sm:p-8">
                                             <div className="text-center">
                                                 <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mx-auto mb-4">
                                                     <Users className="w-8 h-8 text-sky-600" />
@@ -655,24 +671,24 @@ function App() {
                         {/* Contact Section */}
                         <section id="contact" className="space-y-8">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-4">Get in Touch</h2>
-                                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                                <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">Get in Touch</h2>
+                                <p className="text-lg text-slate-600 max-w-2xl mx-auto px-4">
                                     Have questions, feedback, or need support? We'd love to hear from you.
                                 </p>
                             </div>
 
-                            <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-2xl p-8 text-white text-center max-w-2xl mx-auto">
-                                <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <Mail className="w-8 h-8 text-sky-400" />
+                            <div className="bg-gradient-to-r from-slate-900 to-blue-900 rounded-2xl p-6 sm:p-8 text-white text-center max-w-2xl mx-auto">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-sky-400" />
                                 </div>
-                                <h3 className="text-2xl font-bold mb-4">Contact & Support</h3>
+                                <h3 className="text-xl sm:text-2xl font-bold mb-4">Contact & Support</h3>
                                 <p className="text-slate-300 mb-6">
                                     Questions about features, technical issues, or feedback?
                                     We're here to help with anything you need.
                                 </p>
                                 <a
                                     href="mailto:contactfixmymix@gmail.com"
-                                    className="inline-flex items-center px-8 py-3 bg-white text-slate-900 rounded-xl hover:bg-slate-100 transition-colors font-semibold shadow-lg"
+                                    className="inline-flex items-center px-6 sm:px-8 py-3 bg-white text-slate-900 rounded-xl hover:bg-slate-100 transition-colors font-semibold shadow-lg"
                                 >
                                     <Mail className="w-5 h-5 mr-2" />
                                     contactfixmymix@gmail.com
@@ -681,7 +697,7 @@ function App() {
                         </section>
                     </div>
                 ) : (
-                    <div className="space-y-8">
+                    <div className="space-y-6 sm:space-y-8">
 
                         {/* Back to Landing button */}
                         <div className="flex space-x-4">
@@ -697,30 +713,30 @@ function App() {
                         <TrackCounter />
 
                         {/* File Info & Controls */}
-                        <div className="bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <h2 className="text-2xl font-bold text-slate-800">
+                        <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8 border border-slate-200 overflow-hidden">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-4 sm:space-y-0">
+                                <div className="min-w-0">
+                                    <h2 className="text-xl sm:text-2xl font-bold text-slate-800 truncate">
                                         {currentFile.name}
                                     </h2>
-                                    <p className="text-slate-500 mt-1">
+                                    <p className="text-slate-500 mt-1 text-sm sm:text-base">
                                         {(currentFile.size / 1024 / 1024).toFixed(2)} MB • Ready for analysis
                                     </p>
                                 </div>
 
-                                <div className="flex space-x-3">
+                                <div className="flex space-x-3 flex-shrink-0">
                                     <button
                                         onClick={handlePlay}
-                                        className="flex items-center px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl hover:from-sky-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+                                        className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-xl hover:from-sky-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl text-sm sm:text-base"
                                     >
                                         {isPlaying ? (
                                             <>
-                                                <Pause className="w-5 h-5 mr-2" />
+                                                <Pause className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                                                 Pause
                                             </>
                                         ) : (
                                             <>
-                                                <Play className="w-5 h-5 mr-2" />
+                                                <Play className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                                                 Play
                                             </>
                                         )}
@@ -728,9 +744,9 @@ function App() {
 
                                     <button
                                         onClick={handleStop}
-                                        className="flex items-center px-6 py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition-colors"
+                                        className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition-colors text-sm sm:text-base"
                                     >
-                                        <Square className="w-4 h-4 mr-2" />
+                                        <Square className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
                                         Stop
                                     </button>
                                 </div>
@@ -744,7 +760,7 @@ function App() {
                         <InsightsPanel audioProcessor={audioProcessor} isPlaying={isPlaying} />
 
                         {/* Upload Another */}
-                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-8 border border-slate-200">
+                        <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 sm:p-8 border border-slate-200">
                             <h3 className="text-lg font-semibold text-slate-800 mb-6">
                                 Analyze Another Track
                             </h3>
@@ -755,10 +771,10 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="bg-slate-900 text-white py-12">
-                <div className="max-w-7xl mx-auto px-6">
+            <footer className="bg-slate-900 text-white py-8 sm:py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="text-center">
-                        <p className="text-slate-400">
+                        <p className="text-slate-400 text-sm sm:text-base">
                             © 2025 FixMyMix. All rights reserved. • 100% Free Forever
                         </p>
                     </div>
