@@ -78,7 +78,7 @@ const AudioUpload = ({ onFileSelect, isLoading }) => {
             >
                 <input
                     type="file"
-                    accept="audio/*"
+                    accept="audio/mpeg,audio/wav,audio/mp3,audio/m4a,audio/x-m4a,audio/mp4,.mp3,.wav,.m4a,.aac"
                     onChange={handleFileInput}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     disabled={isLoading}
@@ -121,3 +121,4 @@ const AudioUpload = ({ onFileSelect, isLoading }) => {
 };
 
 export default AudioUpload;
+
