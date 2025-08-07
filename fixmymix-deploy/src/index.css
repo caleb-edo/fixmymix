@@ -15,3 +15,91 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Fix any potential canvas overflow issues */
+canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/* Ensure text doesn't break layouts on small screens */
+.text-truncate-mobile {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Fix button spacing on mobile */
+@media (max-width: 640px) {
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .button-group button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Prevent horizontal scroll on small screens */
+@media (max-width: 768px) {
+  .container-responsive {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Ensure grid items don't overflow */
+  .grid-responsive {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Make cards more mobile-friendly */
+  .card-mobile {
+    border-radius: 1rem;
+    padding: 1rem;
+  }
+
+  /* Ensure flex containers wrap properly */
+  .flex-mobile-wrap {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+}
+
+/* Fix for very small screens */
+@media (max-width: 375px) {
+  .text-responsive {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  .title-responsive {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .padding-mobile-sm {
+    padding: 0.75rem;
+  }
+}
