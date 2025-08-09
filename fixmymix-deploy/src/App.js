@@ -38,7 +38,7 @@ const Navigation = ({ user, onLogout, onAuthClick }) => {
                         </div>
                         <div className="min-w-0">
                             <h1 className="text-xl sm:text-2xl font-bold text-white truncate">FixMyMix</h1>
-                            <p className="text-sky-200 text-xs hidden sm:block">Free Professional Audio Analysis</p>
+                            <p className="text-sky-200 text-xs sm:block">Free Professional Audio Analysis</p>
                         </div>
                     </div>
 
