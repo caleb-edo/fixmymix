@@ -214,6 +214,13 @@ function App() {
     };
 
     const handleLogout = () => {
+        // Stop any playing audio
+        if (audioSource) {
+            audioSource.stop();
+            setAudioSource(null);
+            setIsPlaying(false);
+        }
+
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         setUser(null);
@@ -409,7 +416,15 @@ function App() {
                 {showAIMixer ? (
                     <div className="space-y-6 sm:space-y-8">
                         <button
-                            onClick={() => setShowAIMixer(false)}
+                            onClick={() => {
+                                setShowAIMixer(false);
+                                // Force cleanup of any FixMyMix AI audio
+                                const allAudio = document.querySelectorAll('audio');
+                                allAudio.forEach(audio => {
+                                    audio.pause();
+                                    audio.currentTime = 0;
+                                });
+                            }}
                             className="text-sky-600 hover:text-sky-700 font-medium flex items-center"
                         >
                             ← Back to Analyzer
@@ -702,7 +717,15 @@ function App() {
                         {/* Back to Landing button */}
                         <div className="flex space-x-4">
                             <button
-                                onClick={() => setCurrentFile(null)}
+                                onClick={() => {
+                                    // Stop any playing audio before going back
+                                    if (audioSource) {
+                                        audioSource.stop();
+                                        setAudioSource(null);
+                                        setIsPlaying(false);
+                                    }
+                                    setCurrentFile(null);
+                                }}
                                 className="text-sky-600 hover:text-sky-700 font-medium flex items-center"
                             >
                                 ← Back to Landing
